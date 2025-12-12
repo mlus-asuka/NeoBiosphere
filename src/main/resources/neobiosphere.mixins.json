@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "cn.mlus.neobiosphere.mixin",
+  "minVersion": "0.8.5",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "neobiosphere.refmap.json",
+  "mixins": [
+    "MixinMultiNoiseBiomeSource",
+    "MixinMultiNoiseBiomeSourceParameterList",
+    "MixinNoiseBasedAquifer",
+    "MixinNoiseBasedChunkGenerator"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

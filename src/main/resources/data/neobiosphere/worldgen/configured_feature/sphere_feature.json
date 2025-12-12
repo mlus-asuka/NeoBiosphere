@@ -1,0 +1,12 @@
+{
+  "type": "neobiosphere:sphere_feature",
+  "config": {
+    "spacing": 500,
+    "center_y": 62,
+    "radius": 128.0,
+    "tolerance": 0.5,
+    "block_state": {
+      "Name": "minecraft:oak_planks"
+    }
+  }
+}

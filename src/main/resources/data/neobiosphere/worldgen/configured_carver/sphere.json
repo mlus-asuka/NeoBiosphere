@@ -1,0 +1,52 @@
+{
+  "type": "neobiosphere:sphere_carver",
+  "config": {
+    "probability": 1.0,
+    "y": {
+      "type": "minecraft:uniform",
+      "min_inclusive": {
+        "above_bottom": 0
+      },
+      "max_inclusive": {
+        "above_bottom": 320
+      }
+    },
+    "yScale": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 0.1,
+      "max_exclusive": 1.0
+    },
+    "lava_level": {
+      "above_bottom": 0
+    },
+    "replaceable": "#minecraft:overworld_carver_replaceables",
+    "debug_settings": {
+      "debug_mode": false,
+      "air_state": {
+        "Name": "minecraft:air"
+      },
+      "water_state": {
+        "Name": "minecraft:water",
+        "Properties": {
+          "level": "0"
+        }
+      },
+      "lava_state": {
+        "Name": "minecraft:lava",
+        "Properties": {
+          "level": "0"
+        }
+      },
+      "barrier_state": {
+        "Name": "minecraft:barrier"
+      }
+    },
+    "spacing": 500,
+    "radius": 128,
+    "center_y": 62,
+    "tolerance": 0.5,
+    "block_state": {
+      "Name": "minecraft:glass"
+    }
+  }
+}
