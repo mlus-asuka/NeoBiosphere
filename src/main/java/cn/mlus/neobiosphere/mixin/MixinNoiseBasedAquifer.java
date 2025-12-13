@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Aquifer.NoiseBasedAquifer.class)
 public class MixinNoiseBasedAquifer {
-
     @Inject(method = "computeSubstance", at = @At("HEAD"), cancellable = true)
     private void onComputeSubstance(DensityFunction.FunctionContext context, double substance, CallbackInfoReturnable<BlockState> cir) {
         int sphereSpacing = SphereConfig.SPACING.get().intValue();

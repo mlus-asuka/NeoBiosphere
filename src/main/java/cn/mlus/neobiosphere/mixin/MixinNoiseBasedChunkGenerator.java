@@ -71,16 +71,14 @@ public abstract class MixinNoiseBasedChunkGenerator {
                             Objects.requireNonNull(biomemanager);
                             configuredworldcarver.carve(carvingcontext, chunk, biomemanager::getBiome, worldgenrandom, aquifer, chunkPosCenter, carvingmask);
                         }
-                    }else {
-                        if (configuredworldcarver.isStartChunk(worldgenrandom)) {
-                            Objects.requireNonNull(biomemanager);
-                            configuredworldcarver.carve(carvingcontext, chunk, biomemanager::getBiome, worldgenrandom, aquifer, chunkpos1, carvingmask);
-                        }
                     }
                 }
             }
         }
-        ci.cancel();
+
+        if(i >0 && p > 0){
+            ci.cancel();
+        }
     }
 
     @Shadow protected abstract NoiseChunk createNoiseChunk(ChunkAccess chunk, StructureManager structureManager, Blender blender, RandomState random);

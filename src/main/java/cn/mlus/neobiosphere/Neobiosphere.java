@@ -14,7 +14,6 @@ public class Neobiosphere {
     public Neobiosphere(IEventBus modEventBus, ModContainer modContainer) {
         SphereConfig.setup(modContainer);
         ModDensityFunctions.DENSITY_FUNCTIONS.register(modEventBus);
-        ModSurfaceCondition.SURFACE_RULES.register(modEventBus);
         ModCarvers.CARVERS.register(modEventBus);
         ModFeature.FEATURES.register(modEventBus);
         SphereBiomeModifierSerializers.SERIALIZERS.register(modEventBus);

@@ -4,6 +4,7 @@ import cn.mlus.neobiosphere.registry.SphereBiomeModifierSerializers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
@@ -16,6 +17,10 @@ public record SphereBiomeCarverModifier(HolderSet<ConfiguredWorldCarver<?>> carv
     @Override
     public void modify(final @NotNull Holder<Biome> biome, final @NotNull Phase phase, final ModifiableBiomeInfo.BiomeInfo.@NotNull Builder builder) {
         if (phase == Phase.ADD) {
+            if(biome.is(BiomeTags.IS_NETHER) || biome.is(BiomeTags.IS_END)){
+                return;
+            }
+
             BiomeGenerationSettingsBuilder generationSettings = builder.getGenerationSettings();
             this.carvers.forEach((holder) -> generationSettings.addCarver(GenerationStep.Carving.AIR, holder));
         }

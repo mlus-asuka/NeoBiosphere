@@ -36,8 +36,9 @@ public class SphereCarver extends WorldCarver<SphereCarver.SphereCarverConfig> {
     @Override
     public boolean carve(@NotNull CarvingContext context, @NotNull SphereCarverConfig config,
                          @NotNull ChunkAccess chunk, @NotNull Function<BlockPos, Holder<Biome>> biomeAccessor,
-                         @NotNull RandomSource random, @NotNull Aquifer aquifer, ChunkPos chunkPos,
+                         @NotNull RandomSource random, @NotNull Aquifer aquifer, @NotNull ChunkPos chunkPos,
                          @NotNull CarvingMask carvingMask) {
+
         int spacing = SphereConfig.SPACING.get().intValue();
         int radius = SphereConfig.RADIUS.get().intValue();
         int centerY = SphereConfig.CENTER_Y.get().intValue();
