@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "neobiosphere.refmap.json",
   "mixins": [
+    "MixinHeightmap",
     "MixinMultiNoiseBiomeSource",
     "MixinMultiNoiseBiomeSourceParameterList",
     "MixinNoiseBasedAquifer",

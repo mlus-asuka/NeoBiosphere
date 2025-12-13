@@ -27,7 +27,6 @@ import java.util.Objects;
 
 @Mixin(NoiseBasedChunkGenerator.class)
 public abstract class MixinNoiseBasedChunkGenerator {
-
     @Inject(method = "applyCarvers", at = @org.spongepowered.asm.mixin.injection.At("HEAD"), cancellable = true)
     private void applyCarvers(WorldGenRegion level, long seed, RandomState random, BiomeManager biomeManager, StructureManager structureManager, ChunkAccess chunk, GenerationStep.Carving step, CallbackInfo ci){
         NoiseBasedChunkGenerator generator = (NoiseBasedChunkGenerator)(Object)this;

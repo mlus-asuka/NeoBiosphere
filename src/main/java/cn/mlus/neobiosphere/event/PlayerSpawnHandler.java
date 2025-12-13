@@ -1,17 +1,14 @@
 package cn.mlus.neobiosphere.event;
 
 import cn.mlus.neobiosphere.config.SphereConfig;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import cn.mlus.neobiosphere.util.SphereUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
 
 @EventBusSubscriber
 public class PlayerSpawnHandler {
@@ -32,6 +29,10 @@ public class PlayerSpawnHandler {
     private static void teleportIntoSphere(Level level, Player entity, int radius) {
         BlockPos currentPos = entity.blockPosition();
 
+        if(!SphereUtil.isSphereBlock(level.getBlockState(currentPos))) {
+            return;
+        }
+
         BlockPos targetPos = findValidPosition(level, currentPos, radius);
 
         if (targetPos != null) {
@@ -47,7 +48,7 @@ public class PlayerSpawnHandler {
             BlockPos checkPos = new BlockPos(center.getX(), y, center.getZ());
             BlockState state = level.getBlockState(checkPos);
 
-            if (isSolidBlock(state,level,checkPos) && !isSphereBlock(state)) {
+            if (isSolidBlock(state,level,checkPos) && !SphereUtil.isSphereBlock(state)) {
                 if (hasEnoughSpace(level, checkPos.above())) {
                     return checkPos.above();
                 }
@@ -61,7 +62,7 @@ public class PlayerSpawnHandler {
                         BlockPos checkPos = new BlockPos(center.getX() + dx, y, center.getZ() + dz);
                         BlockState state = level.getBlockState(checkPos);
 
-                        if (isSolidBlock(state,level,checkPos) && !isSphereBlock(state)) {
+                        if (isSolidBlock(state,level,checkPos) && !SphereUtil.isSphereBlock(state)) {
                             if (hasEnoughSpace(level, checkPos.above())) {
                                 return checkPos.above();
                             }
@@ -72,12 +73,6 @@ public class PlayerSpawnHandler {
         }
 
         return null;
-    }
-
-    private static boolean isSphereBlock(BlockState state) {
-        BlockState blockState = BuiltInRegistries.BLOCK.get(
-                ResourceLocation.parse(SphereConfig.SPHERE_BLOCK.get())).defaultBlockState();
-        return blockState.equals(state);
     }
 
     private static boolean isSolidBlock(BlockState state, Level level, BlockPos pos) {

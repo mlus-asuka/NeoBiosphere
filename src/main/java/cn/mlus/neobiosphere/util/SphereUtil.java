@@ -1,5 +1,10 @@
 package cn.mlus.neobiosphere.util;
 
+import cn.mlus.neobiosphere.config.SphereConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class SphereUtil {
     public static boolean isInSideSphere(int x, int y, int z, int radius, int spacing, int centetY){
         // Calculate nearest grid point
@@ -13,5 +18,9 @@ public class SphereUtil {
 
         double distanceSquared = dx*dx + dy*dy + dz*dz;
         return distanceSquared <= radius * radius;
+    }
+
+    public static boolean isSphereBlock(BlockState state){
+        return state.is(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(SphereConfig.SPHERE_BLOCK.get())));
     }
 }
