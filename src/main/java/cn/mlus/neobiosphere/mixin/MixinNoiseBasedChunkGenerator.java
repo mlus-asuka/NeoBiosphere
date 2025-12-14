@@ -76,7 +76,7 @@ public abstract class MixinNoiseBasedChunkGenerator {
             }
         }
 
-        if(i >0 && p > 0){
+        if(i > 0 && p > 0){
             ci.cancel();
         }
     }
