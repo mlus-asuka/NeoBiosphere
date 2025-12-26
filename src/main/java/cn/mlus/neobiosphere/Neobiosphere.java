@@ -1,7 +1,10 @@
 package cn.mlus.neobiosphere;
 
 import cn.mlus.neobiosphere.config.SphereConfig;
-import cn.mlus.neobiosphere.registry.*;
+import cn.mlus.neobiosphere.registry.ModCarvers;
+import cn.mlus.neobiosphere.registry.ModDensityFunctions;
+import cn.mlus.neobiosphere.registry.ModFeature;
+import cn.mlus.neobiosphere.registry.SphereBiomeModifierSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

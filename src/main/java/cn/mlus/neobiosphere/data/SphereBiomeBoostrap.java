@@ -6,9 +6,14 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Supplier;
@@ -18,9 +23,13 @@ import java.util.stream.Stream;
 public class SphereBiomeBoostrap
 {
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
+        var biomes = context.lookup(Registries.BIOME);
+
         addCarver(context, "sphere_carver", ModCarvers.BIOSPHERE_CARVER_KEY);
         addCarver(context, "sphere_bridge_carver", ModCarvers.BIOSPHERE_BRIDGE_CARVER_KEY);
-//        addFeature(context, "sphere_feature", ModFeature.BIOSPHERE_FEATURE_KEY);
+        addFeature(context,"sphere_snow", HolderSet.direct(biomes.getOrThrow(Biomes.THE_VOID))
+                , ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.parse("freeze_top_layer")));
+//        addFeatureForAll(context, "sphere_feature", ModFeature.BIOSPHERE_FEATURE_KEY);
     }
 
     private static void register(BootstrapContext<BiomeModifier> context, String name, Supplier<? extends BiomeModifier> modifier) {
@@ -43,7 +52,12 @@ public class SphereBiomeBoostrap
     }
 
     @SafeVarargs
-    private static void addFeature(BootstrapContext<BiomeModifier> context, String name, ResourceKey<PlacedFeature>... features) {
+    private static void addFeatureForAll(BootstrapContext<BiomeModifier> context, String name, ResourceKey<PlacedFeature>... features) {
         register(context, "add_feature/" + name, () -> new SphereBiomeFeatureModifier(featureSet(context, features)));
+    }
+
+    @SafeVarargs
+    private static void addFeature(BootstrapContext<BiomeModifier> context, String name, HolderSet<Biome> biomes, ResourceKey<PlacedFeature>... features) {
+        register(context, "add_feature/" + name, () -> new BiomeModifiers.AddFeaturesBiomeModifier(biomes, featureSet(context, features), GenerationStep.Decoration.TOP_LAYER_MODIFICATION));
     }
 }

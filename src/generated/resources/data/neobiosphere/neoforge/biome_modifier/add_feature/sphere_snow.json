@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "minecraft:the_void",
+  "features": "minecraft:freeze_top_layer",
+  "step": "top_layer_modification"
+}

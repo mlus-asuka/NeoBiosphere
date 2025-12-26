@@ -38,8 +38,8 @@ public abstract class MixinMultiNoiseBiomeSource{
         double dy = j - centerY;
         double dz = k - gridZ;
 
-        double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (!biomeHolder.is(BiomeTags.IS_NETHER) && !biomeHolder.is(BiomeTags.IS_END) && distance - sphereRadius > 2) {
+        double distance = dx * dx + dz * dz + dy * dy;
+        if (!biomeHolder.is(BiomeTags.IS_NETHER) && !biomeHolder.is(BiomeTags.IS_END) && (distance > (2 + sphereRadius) * (2 + sphereRadius))) {
             Holder<Biome> voidBiome = ModBiomeAccess.LOOKUP.getOrThrow(Biomes.THE_VOID);
             if(voidBiome.isBound())
                 cir.setReturnValue(voidBiome);

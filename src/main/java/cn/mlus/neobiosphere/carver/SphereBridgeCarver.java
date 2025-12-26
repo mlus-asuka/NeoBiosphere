@@ -117,7 +117,7 @@ public class SphereBridgeCarver extends SphereCarver {
                     double distX = x - projX;
                     double distY = y - projY;
                     double distZ = z - projZ;
-                    double distSq = distX*distX + distY*distY + distZ*distZ;
+                    double distSq = distX * distX + distY * distY + distZ * distZ;
 
                     if (distSq <= bridgeRadiusSq && distSq >= bridgeRadiusMinusOneSq) {
                         BlockPos pos = new BlockPos(x, y, z);

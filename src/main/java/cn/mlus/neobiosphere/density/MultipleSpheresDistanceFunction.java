@@ -37,7 +37,7 @@ public record MultipleSpheresDistanceFunction(
         double dy = context.blockY() - centerY;
         double dz = context.blockZ() - gridZ;
 
-        double distance = dx*dx + dy*dy + dz*dz;
+        double distance = dx * dx + dy * dy + dz * dz;
         return distance / (radius * radius); // return value from 0 to 1, 0 = center, >1 = outside
     }
 
