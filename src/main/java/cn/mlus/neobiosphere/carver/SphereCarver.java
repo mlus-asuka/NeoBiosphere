@@ -40,14 +40,7 @@ public class SphereCarver extends WorldCarver<SphereCarver.SphereCarverConfig> {
                          @NotNull CarvingMask carvingMask) {
 
         int spacing = SphereConfig.SPACING.get().intValue();
-        int radius = SphereConfig.RADIUS.get().intValue();
         int centerY = SphereConfig.CENTER_Y.get().intValue();
-
-        if(SphereConfig.ONLY_UPPER_HEMISPHERE.get())
-            radius --;
-
-        BlockState blockState = BuiltInRegistries.BLOCK.get(
-                ResourceLocation.parse(SphereConfig.SPHERE_BLOCK.get())).defaultBlockState();
 
         int chunkStartX = chunkPos.getMinBlockX();
         int chunkStartZ = chunkPos.getMinBlockZ();
@@ -66,6 +59,12 @@ public class SphereCarver extends WorldCarver<SphereCarver.SphereCarverConfig> {
 
                 double centerX = gridX * spacing;
                 double centerZ = gridZ * spacing;
+
+                int radius = getSphereRadius(gridX, gridZ);
+                if (SphereConfig.ONLY_UPPER_HEMISPHERE.get())
+                    radius--;
+
+                BlockState blockState = getSphereBlockState(gridX, gridZ);
 
                 int minY = Math.max(chunk.getMinBuildHeight(), centerY - radius - 1);
                 int maxY = Math.min(chunk.getMaxBuildHeight(), centerY + radius + 1);
@@ -121,6 +120,67 @@ public class SphereCarver extends WorldCarver<SphereCarver.SphereCarverConfig> {
     @Override
     public boolean isStartChunk(@NotNull SphereCarverConfig config, @NotNull RandomSource random) {
         return true;
+    }
+
+    public static int getSphereGridX(double x) {
+        return (int) Math.round(x / SphereConfig.SPACING.get().intValue());
+    }
+
+    public static int getSphereGridZ(double z) {
+        return (int) Math.round(z / SphereConfig.SPACING.get().intValue());
+    }
+
+    public static double getSphereCenterX(int gridX) {
+        return gridX * SphereConfig.SPACING.get().intValue();
+    }
+
+    public static double getSphereCenterZ(int gridZ) {
+        return gridZ * SphereConfig.SPACING.get().intValue();
+    }
+
+    public static int getSphereRadius(int gridX, int gridZ) {
+        int minRadius = SphereConfig.MIN_RADIUS.get().intValue();
+        int maxRadius = SphereConfig.RADIUS.get().intValue();
+        if (minRadius >= maxRadius) return maxRadius;
+        int seed = gridX * 31 + gridZ;
+        int hash = seed * 1664525 + 1013904223;
+        return minRadius + Math.abs(hash) % (maxRadius - minRadius + 1);
+    }
+
+    public static int getSphereRadiusAt(double x, double z) {
+        return getSphereRadius(getSphereGridX(x), getSphereGridZ(z));
+    }
+
+    public static BlockState getSphereBlockState(int gridX, int gridZ) {
+        java.util.List<? extends String> sphereBlocks = SphereConfig.SPHERE_BLOCK.get();
+        if (sphereBlocks.isEmpty()) return Blocks.AIR.defaultBlockState();
+        int blockIndex = Math.abs(gridX * 31 + gridZ) % sphereBlocks.size();
+        return BuiltInRegistries.BLOCK.get(
+                ResourceLocation.parse(sphereBlocks.get(blockIndex))).defaultBlockState();
+    }
+
+    public static boolean isInsideAnySphere(double x, double y, double z) {
+        int spacing = SphereConfig.SPACING.get().intValue();
+        int centerY = SphereConfig.CENTER_Y.get().intValue();
+        int gridX = getSphereGridX(x);
+        int gridZ = getSphereGridZ(z);
+        // Check the nearest sphere and its neighbors to handle edge cases
+        for (int gx = gridX - 1; gx <= gridX + 1; gx++) {
+            for (int gz = gridZ - 1; gz <= gridZ + 1; gz++) {
+                double centerX = getSphereCenterX(gx);
+                double centerZ = getSphereCenterZ(gz);
+                int radius = getSphereRadius(gx, gz);
+                double dx = x - centerX;
+                double dy = y - centerY;
+                double dz = z - centerZ;
+                double shellThickness = 2.0;
+                double innerRadiusSq = (radius - shellThickness) * (radius - shellThickness);
+                if (dx * dx + dy * dy + dz * dz < innerRadiusSq) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static class SphereCarverConfig extends CarverConfiguration {

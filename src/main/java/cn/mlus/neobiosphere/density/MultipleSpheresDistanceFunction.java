@@ -1,5 +1,6 @@
 package cn.mlus.neobiosphere.density;
 
+import cn.mlus.neobiosphere.carver.SphereCarver;
 import cn.mlus.neobiosphere.config.SphereConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -25,7 +26,6 @@ public record MultipleSpheresDistanceFunction(
     @Override
     public double compute(FunctionContext context) {
         int spacing = SphereConfig.SPACING.get().intValue();
-        int radius = SphereConfig.RADIUS.get().intValue();
         int centerY = SphereConfig.CENTER_Y.get().intValue();
 
         // Calculate nearest grid point
@@ -38,6 +38,7 @@ public record MultipleSpheresDistanceFunction(
         double dz = context.blockZ() - gridZ;
 
         double distance = dx * dx + dy * dy + dz * dz;
+        int radius = SphereCarver.getSphereRadiusAt(context.blockX(), context.blockZ());
         return distance / (radius * radius); // return value from 0 to 1, 0 = center, >1 = outside
     }
 

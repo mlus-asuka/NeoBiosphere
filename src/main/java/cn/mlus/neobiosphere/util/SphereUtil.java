@@ -21,6 +21,11 @@ public class SphereUtil {
     }
 
     public static boolean isSphereBlock(BlockState state){
-        return state.is(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(SphereConfig.SPHERE_BLOCK.get())));
+        for (String blockId : SphereConfig.SPHERE_BLOCK.get()) {
+            if (state.is(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(blockId)))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

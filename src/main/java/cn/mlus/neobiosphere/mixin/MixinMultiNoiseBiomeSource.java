@@ -1,5 +1,6 @@
 package cn.mlus.neobiosphere.mixin;
 
+import cn.mlus.neobiosphere.carver.SphereCarver;
 import cn.mlus.neobiosphere.config.SphereConfig;
 import cn.mlus.neobiosphere.registry.ModBiomeAccess;
 import net.minecraft.core.Holder;
@@ -24,7 +25,6 @@ public abstract class MixinMultiNoiseBiomeSource{
         Holder<Biome> biomeHolder = this.getNoiseBiome(sampler.sample(x, y, z));
 
         int sphereSpacing = SphereConfig.SPACING.get().intValue();
-        int sphereRadius = SphereConfig.RADIUS.get().intValue();
         int centerY = SphereConfig.CENTER_Y.get().intValue();
 
         int i = QuartPos.toBlock(x);
@@ -39,6 +39,7 @@ public abstract class MixinMultiNoiseBiomeSource{
         double dz = k - gridZ;
 
         double distance = dx * dx + dz * dz + dy * dy;
+        int sphereRadius = SphereCarver.getSphereRadiusAt(i, k);
         if (!biomeHolder.is(BiomeTags.IS_NETHER) && !biomeHolder.is(BiomeTags.IS_END) && (distance > (2 + sphereRadius) * (2 + sphereRadius))) {
             Holder<Biome> voidBiome = ModBiomeAccess.LOOKUP.getOrThrow(Biomes.THE_VOID);
             if(voidBiome.isBound())

@@ -121,7 +121,7 @@ public class SphereBridgeCarver extends SphereCarver {
 
                     if (distSq <= bridgeRadiusSq && distSq >= bridgeRadiusMinusOneSq) {
                         BlockPos pos = new BlockPos(x, y, z);
-                        if (!isInsideAnySphere(x, y, z, chunk.getMinBuildHeight(), chunk.getMaxBuildHeight())) {
+                        if (!SphereCarver.isInsideAnySphere(x, y, z)) {
                             if (chunk.getBlockState(pos).isAir()) {
                                 chunk.setBlockState(pos, bridgeState, false);
                                 generated = true;
@@ -135,25 +135,4 @@ public class SphereBridgeCarver extends SphereCarver {
         return generated;
     }
 
-    private boolean isInsideAnySphere(double x, double y, double z, int minY, int maxY) {
-        int spacing = SphereConfig.SPACING.get().intValue();
-        int radius = SphereConfig.RADIUS.get().intValue();
-        int centerY = SphereConfig.CENTER_Y.get().intValue();
-
-        int gridX = (int)Math.round(x / spacing);
-        int gridZ = (int)Math.round(z / spacing);
-
-        double centerX = gridX * spacing;
-        double centerZ = gridZ * spacing;
-
-        double dx = x - centerX;
-        double dy = y - centerY;
-        double dz = z - centerZ;
-        double distanceSq = dx*dx + dy*dy + dz*dz;
-
-        double shellThickness = 2.0;
-        double innerRadiusSq = (radius - shellThickness) * (radius - shellThickness);
-
-        return distanceSq < innerRadiusSq;
-    }
 }

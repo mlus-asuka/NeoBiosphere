@@ -1,5 +1,6 @@
 package cn.mlus.neobiosphere.mixin;
 
+import cn.mlus.neobiosphere.carver.SphereCarver;
 import cn.mlus.neobiosphere.config.SphereConfig;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,12 +16,13 @@ public class MixinNoiseBasedAquifer {
     @Inject(method = "computeSubstance", at = @At("HEAD"), cancellable = true)
     private void onComputeSubstance(DensityFunction.FunctionContext context, double substance, CallbackInfoReturnable<BlockState> cir) {
         int sphereSpacing = SphereConfig.SPACING.get().intValue();
-        int sphereRadius = SphereConfig.RADIUS.get().intValue();
         int centerY = SphereConfig.CENTER_Y.get().intValue();
 
         int x = context.blockX();
         int y = context.blockY();
         int z = context.blockZ();
+
+        int sphereRadius = SphereCarver.getSphereRadiusAt(x, z);
 
         double gridX = Math.round((float) x / sphereSpacing) * sphereSpacing;
         double gridZ = Math.round((float) z / sphereSpacing) * sphereSpacing;

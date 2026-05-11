@@ -1,6 +1,6 @@
 package cn.mlus.neobiosphere.event;
 
-import cn.mlus.neobiosphere.config.SphereConfig;
+import cn.mlus.neobiosphere.carver.SphereCarver;
 import cn.mlus.neobiosphere.util.SphereUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -16,23 +16,24 @@ public class PlayerSpawnHandler {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         Player entity = event.getEntity();
         Level level = entity.level();
-        new Thread(() -> teleportIntoSphere(level, entity, SphereConfig.RADIUS.get().intValue())).start();
+        new Thread(() -> teleportIntoSphere(level, entity)).start();
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player entity = event.getEntity();
         Level level = entity.level();
-        new Thread(() -> teleportIntoSphere(level, entity, SphereConfig.RADIUS.get().intValue())).start();
+        new Thread(() -> teleportIntoSphere(level, entity)).start();
     }
 
-    private static void teleportIntoSphere(Level level, Player entity, int radius) {
+    private static void teleportIntoSphere(Level level, Player entity) {
         BlockPos currentPos = entity.blockPosition();
 
         if(!SphereUtil.isSphereBlock(level.getBlockState(currentPos))) {
             return;
         }
 
+        int radius = SphereCarver.getSphereRadiusAt(currentPos.getX(), currentPos.getZ());
         BlockPos targetPos = findValidPosition(level, currentPos, radius);
 
         if (targetPos != null) {

@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeManager;
@@ -56,6 +57,9 @@ public abstract class MixinNoiseBasedChunkGenerator {
                     worldgenrandom.setLargeFeatureSeed(seed + (long)l, chunkpos1.x, chunkpos1.z);
 
                     if(configuredworldcarver.worldCarver() instanceof SphereCarver){
+                        if(level.getLevel().dimension() != Level.OVERWORLD)
+                            continue;
+
                         if(configuredworldcarver.worldCarver() instanceof SphereBridgeCarver){
                             if(p > 0)
                                 continue;
