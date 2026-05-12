@@ -57,8 +57,11 @@ public abstract class MixinNoiseBasedChunkGenerator {
                     worldgenrandom.setLargeFeatureSeed(seed + (long)l, chunkpos1.x, chunkpos1.z);
 
                     if(configuredworldcarver.worldCarver() instanceof SphereCarver){
-                        if(level.getLevel().dimension() != Level.OVERWORLD)
-                            ci.cancel();
+                        if(level.getLevel().dimension() != Level.OVERWORLD){
+                            i = 1;
+                            p = 1;
+                            continue;
+                        }
 
                         if(configuredworldcarver.worldCarver() instanceof SphereBridgeCarver){
                             if(p > 0)
