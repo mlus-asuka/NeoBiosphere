@@ -58,7 +58,7 @@ public abstract class MixinNoiseBasedChunkGenerator {
 
                     if(configuredworldcarver.worldCarver() instanceof SphereCarver){
                         if(level.getLevel().dimension() != Level.OVERWORLD)
-                            continue;
+                            ci.cancel();
 
                         if(configuredworldcarver.worldCarver() instanceof SphereBridgeCarver){
                             if(p > 0)
